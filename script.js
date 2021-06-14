@@ -94,6 +94,46 @@ function movePaddle() {
 	}
 }
 
+function moveBall() {
+	ball.x += ball.dx;
+	ball.y += ball.dy;
+
+	// столкновение левойПравой стенок
+	if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
+		ball.dx *= -1; //ball.dx = ball.dx * -1
+	}
+	// столкновение верхнейНижней стенок
+	if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
+		ball.dy *= -1 
+	}
+
+	// столкновение с платформой
+	if (
+		ball.x - ball.size > paddle.x && // проверка слева от платформы
+		ball.x + ball.size < paddle.x + paddle.width && // проверка справа от плафтормы
+		ball.y + ball.size > paddle.y 
+		) {
+		ball.dy = -ball.speed;
+	}
+
+	// столконовение с кирпичами
+	bricks.forEach(column => {
+		column.forEach(brick => {
+			if (brick.visible) {
+				if (
+					ball.x - ball.size > brick.x && // левая сторона кирпича
+					ball.x + ball.size < brick.x + brick.width && // правая сторона кирпича
+					ball.y + ball.size > brick.y && // верхняя сторона кирпича
+					ball.y - ball.size < brick.y + brick.height // нижняя сторона кирпича
+					) {
+					ball.dy *= -1;
+					brick.visible = false;
+				}
+			}
+		})
+	})
+}
+
 function draw() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -105,6 +145,7 @@ function draw() {
 
 function update() {
 	movePaddle();
+	moveBall();
 
 	draw();
 
