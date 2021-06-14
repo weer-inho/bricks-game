@@ -54,7 +54,7 @@ function drawPaddle() {
 
 function drawScore() {
 	ctx.font = '20px Arial';
-	ctx.fillText(`Score: ${score}`, canvas.width - 100, 30)
+	ctx.fillText(`Счет: ${score}`, canvas.width - 100, 30)
 }
 
 function drawBricks() {
@@ -128,10 +128,30 @@ function moveBall() {
 					) {
 					ball.dy *= -1;
 					brick.visible = false;
+
+					increaseScore();
 				}
 			}
 		})
 	})
+	if (ball.y + ball.size > canvas.height) {
+		showAllBricks();
+		score = 0;
+	}
+}
+
+function increaseScore() {
+	score++;
+
+	if (score % (brickRowCount * brickColumnCount) === 0) {
+		showAllBricks();
+	}
+}
+
+function showAllBricks() {
+	bricks.forEach(column => {
+		column.forEach(brick => (brick.visible = true))
+	}) 
 }
 
 function draw() {
