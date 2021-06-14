@@ -78,16 +78,62 @@ for (let i = 0; i < brickColumnCount; i++) {
 		bricks[i][j] = {x, y, ...brickInfo};
 	}
 }
-	console.log(bricks)
+
+function movePaddle() {
+	paddle.x += paddle.dx;
+
+	if (paddle.x + paddle.width > canvas.width) {
+		// когда платформа коснется правой стенки
+		// координата х станет постоянной 
+		// не даст уйти дальше
+		paddle.x = canvas.width - paddle.width;
+	}
+
+	if (paddle.x < 0) {
+		paddle.x = 0;
+	}
+}
 
 function draw() {
+	ctx.clearRect(0, 0, canvas.width, canvas.height)
+
 	drawPaddle() 
 	drawBall()
 	drawScore()
 	drawBricks()
 }
 
-draw()
+function update() {
+	movePaddle();
+
+	draw();
+
+	requestAnimationFrame(update)
+}
+
+update()
+
+function keyDown(evt) {
+	if (evt.key === 'Right' || evt.key === 'ArrowRight') {
+		paddle.dx = paddle.speed;
+	} else if (evt.key === 'Left' || evt.key === 'ArrowLeft') {
+		paddle.dx = -paddle.speed;
+	}
+}
+
+function keyUp(evt) {
+	if (
+		evt.key === 'ArrowRight' ||
+		evt.key === 'Right' ||
+		evt.key === 'ArrowLeft' ||
+		evt.key === 'Left'
+	) {
+		paddle.dx = 0;
+	}
+}
+
+document.addEventListener('keydown', keyDown);
+document.addEventListener('keyup', keyUp);
 
 rulesBtn.addEventListener('click', () => rules.classList.add('show'));
 closeBtn.addEventListener('click', () => rules.classList.remove('show'));
