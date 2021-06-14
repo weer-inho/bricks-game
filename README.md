@@ -1,6 +1,6 @@
 # Проект «Кирпичики» <a href="https://img.itch.zone/aW1nLzM3NDE1NjYuanBn/315x250%23c/yMqUn4.jpg"><img align="left" width="315" height="250" src="https://img.itch.zone/aW1nLzM3NDE1NjYuanBn/315x250%23c/yMqUn4.jpg"></a>
 ---
-https://htmlacademy-ecmascript.github.io/1376695-cinemaddict-14/11/
+https://weer-inho.github.io/bricks-game/
 ---
 
 Всегда мечтал заниматься разработкой игр. Разобрался в базовых концептах canvas API и собрал вот такую незамысловатую штуку. 
