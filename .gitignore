@@ -12,3 +12,4 @@ package.json
 npm-debug.log*
 Thumbs.db
 .vscode/
+plan.txt

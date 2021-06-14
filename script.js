@@ -6,7 +6,9 @@ const ctx = canvas.getContext('2d');
 
 let score = 0;
 
-// свойства мячика
+const brickColumnCount = 9; 
+const brickRowCount = 5;
+
 const ball = {
 	x: canvas.width / 2,
 	y: canvas.height / 2,
@@ -16,7 +18,15 @@ const ball = {
 	dy: -4,
 }
 
-// свойства платформы
+const brickInfo = {
+	width: 70,
+	height: 20,
+	padding: 10,
+	offsetX: 45, // изначальная позиция кирпича
+	offsetY: 60,
+	visible: true,
+}
+
 const paddle = {
 	x: canvas.width / 2 - 40,
 	y: canvas.height - 20,
@@ -26,7 +36,6 @@ const paddle = {
 	dx: 0
 }
 
-// рисую мячик
 function drawBall() {
 	ctx.beginPath();
 	ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
@@ -35,7 +44,6 @@ function drawBall() {
 	ctx.closePath();
 }
 
-// рисую платформу
 function drawPaddle() {
 	ctx.beginPath();
 	ctx.rect(paddle.x, paddle.y, paddle.width, paddle.height);
@@ -44,16 +52,39 @@ function drawPaddle() {
 	ctx.closePath();
 }
 
-// рисует все
+function drawScore() {
+	ctx.font = '20px Arial';
+	ctx.fillText(`Score: ${score}`, canvas.width - 100, 30)
+}
+
+function drawBricks() {
+	bricks.forEach(column => {
+		column.forEach(brick => {
+			ctx.beginPath();
+			ctx.rect(brick.x, brick.y, brick.width, brick.height);
+			ctx.fillStyle = brick.visible ? '#0095dd' : 'transparent';
+			ctx.fill();
+			ctx.closePath();
+		})
+	})
+}
+
+const bricks = [];
+for (let i = 0; i < brickColumnCount; i++) {
+	bricks[i] = [];
+	for ( let j = 0; j < brickRowCount; j++) {
+		const x = i * (brickInfo.width + brickInfo.padding) + brickInfo.offsetX;
+		const y = j * (brickInfo.height + brickInfo.padding) + brickInfo.offsetY;
+		bricks[i][j] = {x, y, ...brickInfo};
+	}
+}
+	console.log(bricks)
+
 function draw() {
 	drawPaddle() 
 	drawBall()
 	drawScore()
-}
-
-function drawScore() {
-	ctx.font = '20px Arial';
-	ctx.fillText(`Score: ${score}`, canvas.width - 100, 30)
+	drawBricks()
 }
 
 draw()
@@ -61,15 +92,3 @@ draw()
 rulesBtn.addEventListener('click', () => rules.classList.add('show'));
 closeBtn.addEventListener('click', () => rules.classList.remove('show'));
 
-// 1. создать контекст
-// 2. создать и нарисовать мяч
-// 3. создать и нарисовать платформу
-// 4. создать кирпичики
-// 5. нарисовать счет
-// 6. добавить update() - анимировать - requestAnimationFrame(cb)
-// 7. двигать платформу
-// 8. слушатели кнопок чтобы двигать платформу
-// 9. двигать мяч
-// 10. добавить стенки и реакцию на столкновение с ними
-// 11. увеличить счет когда ломается кирпичик
-// 12. проиграл - нарисуй все заново и обнули счет
